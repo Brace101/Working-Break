@@ -11,7 +11,7 @@ public class NumberHunter {
 
         String indent = "\t\t";
         String indentOne = "\t";
-        String userResponse = "";
+        String userResponse;
 
         String BLINK = "\u001B[5m";
         String GREEN = "\u001B[32m";
@@ -37,13 +37,12 @@ public class NumberHunter {
         String userName = input.nextLine();
 
         String playAgain = "yes";
-        while (playAgain.equalsIgnoreCase("yes")) {
 
-            userResponse = "";
+        while (playAgain.equalsIgnoreCase("yes")) {
 
             System.out.println(GREEN + BOLD + indentOne + "=======================================" + RESET);
             System.out.println(PURPLE + BOLD + indent + ITALIC + "??NUMBER HUNTER GAME??" + RESET);
-            System.out.println(GREEN + BOLD + indentOne +  "=======================================" + RESET);
+            System.out.println(GREEN + BOLD + indentOne + "=======================================" + RESET);
             System.out.println(CYAN + indent + ITALIC + "Welcome, " + userName + "!!!" + RESET);
             System.out.println(GREEN + BOLD + indentOne + "---------------------------------------" + "\n" + RESET);
 
@@ -53,15 +52,17 @@ public class NumberHunter {
             System.out.println("\n" + YELLOW + indentOne + "2.?? Focus Mode" + RESET);
             System.out.println("\n" + YELLOW + indentOne + "3.?? Beast Mode" + RESET);
 
-            System.out.print("\n" + CYAN + indent + BOLD + "Enter choice('1-3'): " +  RESET);
+            System.out.print("\n" + CYAN + indent + BOLD + "Enter choice('1-3'): " + RESET);
 
-            int choice = 0;
+            int choice;
 
             if (input.hasNextInt()) {
                 choice = input.nextInt();
                 input.nextLine();
             } else {
                 input.nextLine();
+                System.out.println(RED + indent + "Invalid input!" + RESET);
+                continue;
             }
 
             if (choice < 1 || choice > 3) {
@@ -69,152 +70,83 @@ public class NumberHunter {
                 continue;
             }
 
+            int secretNumber;
+            int attempts;
+            int maxAttempts;
+
             if (choice == 1) {
+                secretNumber = random.nextInt(50) + 1;
+                attempts = 0;
+                maxAttempts = 10;
 
-                boolean guessedCorrectly = false;
-                int secretNumber = random.nextInt(50)+1;
-                int attempts = 0;
-
-                System.out.println("\n" + CYAN + ITALIC + indent + "Chill Mode loading..." + "\n" + RESET);
-                System.out.print("\n" + CYAN + indent + "You've got 10 lives to crack the code! The number is hiding between 1 and 50" + "\n" + RESET);
-
-                while (!userResponse.equalsIgnoreCase("OK")) {
-                    System.out.print(WHITE + indent + BLINK + "Type 'OK' to start: " + RESET);
-                    userResponse = input.nextLine();
-                }
-
-                while (attempts < 10) {
-
-                    System.out.println("\n" + CYAN + indent + "Attempt " + (attempts + 1) + " of 10" + RESET);
-                    System.out.print(WHITE + indent + "Enter your guess > " + RESET);
-
-                    if (!input.hasNextInt()) {
-                        System.out.println(RED + indent + "Please enter a valid number!" + RESET);
-                        input.nextLine();
-                        continue;
-                    }
-                    int userGuess = input.nextInt();
-                    input.nextLine();
-
-                    attempts++;
-
-                    if (userGuess == secretNumber) {
-                        guessedCorrectly = true;
-                        System.out.println("\n" + GREEN + BOLD + indent + " CORRECT! " + RESET);
-                        System.out.println("\n" + GREEN + indent + "You guessed it in " + attempts + " attempts.\n" + RESET);
-                        break;
-
-                    } else if (userGuess < secretNumber) {
-                        System.out.println(YELLOW + indent + " Too low!\n" + RESET);
-                    } else {
-                        System.out.println(YELLOW + indent + " Too high!\n" + RESET);
-                    }
-                }
-
-                if (!guessedCorrectly) {
-                    System.out.println(RED + BOLD + indent + " GAME OVER " + RESET);
-                    System.out.println(RED + indent + "The correct number was: " + secretNumber + "\n" + RESET);
-                }
+                System.out.println("\n" + CYAN + ITALIC + indent + "Chill Mode loading..." + RESET);
 
             } else if (choice == 2) {
+                secretNumber = random.nextInt(100) + 1;
+                attempts = 0;
+                maxAttempts = 7;
 
-                boolean guessedCorrectly = false;
-                int secretNumber = random.nextInt(100)+1;
-                int attempts = 0;
+                System.out.println("\n" + CYAN + ITALIC + indent + "Focus Mode loading..." + RESET);
 
-                System.out.println("\n" + CYAN + ITALIC + indent + "Focus Mode loading..." + "\n" + RESET);
-                System.out.print(CYAN + indent + "You've got 7 lives to crack the code! The number is hiding between 1 and 100" + "\n" + RESET);
+            } else {
+                secretNumber = random.nextInt(200) + 1;
+                attempts = 0;
+                maxAttempts = 5;
 
-                while (!userResponse.equalsIgnoreCase("OK")) {
-                    System.out.print(WHITE + indent + BLINK + "Type 'OK' to start: " + RESET);
-                    userResponse = input.nextLine();
-                }
+                System.out.println("\n" + CYAN + ITALIC + indent + "Beast Mode loading..." + RESET);
+            }
 
-                while (attempts < 7) {
+            System.out.print(CYAN + indent + "Type 'OK' to start: " + RESET);
 
-                    System.out.println("\n" + CYAN + indent + "Attempt " + (attempts + 1) + " of 7" + RESET);
-                    System.out.print(WHITE + BOLD + indent + "Enter your guess > " + RESET);
+            userResponse = "";
+            while (!userResponse.equalsIgnoreCase("OK")) {
+                userResponse = input.nextLine();
+            }
 
-                    if (!input.hasNextInt()) {
-                        System.out.println(RED + indent + "Please enter a valid number!" + RESET);
-                        input.nextLine();
-                        continue;
-                    }
-                    int userGuess = input.nextInt();
+            boolean guessedCorrectly = false;
+
+            while (attempts < maxAttempts) {
+
+                System.out.println("\n" + CYAN + indent + "Attempt " + (attempts + 1) + " of " + maxAttempts + RESET);
+                System.out.print(WHITE + indent + "Enter your guess > " + RESET);
+
+                if (!input.hasNextInt()) {
+                    System.out.println(RED + indent + "Please enter a valid number!" + RESET);
                     input.nextLine();
-
-                    attempts++;
-
-                    if (userGuess == secretNumber) {
-                        guessedCorrectly = true;
-                        System.out.println("\n" + GREEN + BOLD + indent + " CORRECT! " + RESET);
-                        System.out.println("\n" + GREEN + indent + "You guessed it in " + attempts + " attempts.\n" + RESET);
-                        break;
-
-                    } else if (userGuess < secretNumber) {
-                        System.out.println(YELLOW + indent + " Too low!\n" + RESET);
-                    } else {
-                        System.out.println(YELLOW + indent + " Too high!\n" + RESET);
-                    }
+                    continue;
                 }
 
-                if (!guessedCorrectly) {
-                    System.out.println(RED + BOLD + indent + " GAME OVER " + RESET);
-                    System.out.println(RED + indent + "The correct number was: " + secretNumber + "\n" + RESET);
-                }
+                int userGuess = input.nextInt();
+                input.nextLine();
 
-            } else if (choice == 3) {
+                attempts++;
 
-                boolean guessedCorrectly = false;
-                int secretNumber = random.nextInt(200)+1;
-                int attempts = 0;
+                if (userGuess == secretNumber) {
+                    guessedCorrectly = true;
+                    System.out.println(GREEN + BOLD + indent + " CORRECT! " + RESET);
+                    System.out.println(GREEN + indent + "You guessed it in " + attempts + " attempts.\n" + RESET);
+                    break;
 
-                System.out.println("\n" + CYAN + ITALIC + indent + "Beast Mode loading..." + "\n" + RESET);
-                System.out.print("\n" + CYAN + indent + "You've got 5 lives to crack the code! The number is hiding between 1 and 200" + "\n" + RESET);
+                } else if (userGuess < secretNumber) {
+                    System.out.println(YELLOW + indent + " Too low!\n" + RESET);
 
-                while (!userResponse.equalsIgnoreCase("OK")) {
-                    System.out.print(WHITE + indent + BLINK + "Type 'OK' to start: " + RESET);
-                    userResponse = input.nextLine();
-                }
-
-                while (attempts < 5) {
-
-                    System.out.println("\n" + CYAN + indent + "Attempt " + (attempts + 1) + " of 5" + RESET);
-                    System.out.print(WHITE + indent + "Enter your guess > " + RESET);
-
-                    if (!input.hasNextInt()) {
-                        System.out.println(RED + indent + "Please enter a valid number!" + RESET);
-                        input.nextLine();
-                        continue;
-                    }
-                    int userGuess = input.nextInt();
-                    input.nextLine();
-
-                    attempts++;
-
-                    if (userGuess == secretNumber) {
-                        guessedCorrectly = true;
-                        System.out.println("\n" + GREEN + BOLD + indent + " CORRECT! " + RESET);
-                        System.out.println("\n" + GREEN + indent + "You guessed it in " + attempts + " attempts.\n" + RESET);
-                        break;
-
-                    } else if (userGuess < secretNumber) {
-                        System.out.println(YELLOW + indent + " Too low!\n" + RESET);
-                    } else {
-                        System.out.println(YELLOW + indent + " Too high!\n" + RESET);
-                    }
-                }
-
-                if (!guessedCorrectly) {
-                    System.out.println(RED + BOLD + indent + " GAME OVER " + RESET);
-                    System.out.println(RED + indent + "The correct number was: " + secretNumber + "\n" + RESET);
+                } else {
+                    System.out.println(YELLOW + indent + " Too high!\n" + RESET);
                 }
             }
+
+            if (!guessedCorrectly) {
+                System.out.println(RED + BOLD + indent + " GAME OVER " + RESET);
+                System.out.println(RED + indent + "The correct number was: " + secretNumber + "\n" + RESET);
+            }
+
+            input.nextLine(); // clear buffer before play again prompt
 
             System.out.print("\n" + CYAN + indent + BOLD + "Play again? (Yes/No): " + RESET);
             playAgain = input.nextLine();
         }
 
-        System.out.println("\n" + GREEN + BOLD + indent + "Thanks for playing, " + userName + "! See you next time ?" + "\n" + RESET);
+        System.out.println("\n" + GREEN + BOLD + indent +
+                "Thanks for playing, " + userName + "! See you next time ?" + "\n" + RESET);
     }
 }
