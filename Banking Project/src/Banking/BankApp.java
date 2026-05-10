@@ -150,7 +150,7 @@ public class BankApp {
                                 "Invalid option" + RESET + "\n");
                 }
 
-                System.out.print(indent + YELLOW + "Do you want another transaction? (yes/no): ");
+                System.out.print(indent + YELLOW + "Do you want to perform other transaction? (yes/no): ");
                 String answer = input.next();
 
                 if (!answer.equalsIgnoreCase("yes")) {

@@ -212,7 +212,7 @@ public class MainApplication {
                     default -> System.out.println(indent + RED + "Invalid option\n" + RESET);
                 }
 
-                System.out.print(indent + YELLOW + "Do you want another transaction? (yes/no): ");
+                System.out.print(indent + YELLOW + "Do you want to performe other activities? (yes/no): ");
                 String answer = input.nextLine();
 
                 if (!answer.equalsIgnoreCase("yes")) {
