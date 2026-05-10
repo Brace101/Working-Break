@@ -1,3 +1,5 @@
+package Diary;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,7 @@ public class Diary {
     private String password;
     private boolean isLocked = true;
     private List<Entry> entries = new ArrayList<>();
+    private int entryCounter = 0;
 
     public Diary(String username, String password) {
         this.username = username;
@@ -14,9 +17,12 @@ public class Diary {
     }
 
     public void unlockDiary(String password) {
-        if (this.password.equals(password)) {
-            isLocked = false;
+
+        if (!this.password.equals(password)) {
+            throw new IllegalArgumentException("Incorrect Password");
         }
+
+        isLocked = false;
     }
 
     public void lockDiary() {
@@ -28,12 +34,24 @@ public class Diary {
     }
 
     public void createEntry(String title, String body) {
-        int id = entries.size() + 1;
-        Entry entry = new Entry(id, title, body);
+
+        if (isLocked) {
+            throw new IllegalStateException("Diary is locked");
+        }
+
+        entryCounter++;
+
+        Entry entry = new Entry(entryCounter, title, body);
+
         entries.add(entry);
     }
 
     public void deleteEntry(int id) {
+
+        if (isLocked) {
+            throw new IllegalStateException("Diary is locked");
+        }
+
         Entry entry = findEntryById(id);
 
         if (entry != null) {
@@ -42,15 +60,26 @@ public class Diary {
     }
 
     public Entry findEntryById(int id) {
+
+        if (isLocked) {
+            throw new IllegalStateException("Diary is locked");
+        }
+
         for (Entry entry : entries) {
             if (entry.getId() == id) {
                 return entry;
             }
         }
+
         return null;
     }
 
     public void updateEntry(int id, String newBody) {
+
+        if (isLocked) {
+            throw new IllegalStateException("Diary is locked");
+        }
+
         Entry entry = findEntryById(id);
 
         if (entry != null) {
@@ -63,6 +92,11 @@ public class Diary {
     }
 
     public List<Entry> getEntries() {
+
+        if (isLocked) {
+            throw new IllegalStateException("Diary is locked");
+        }
+
         return entries;
     }
 }

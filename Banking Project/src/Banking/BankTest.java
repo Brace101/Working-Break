@@ -20,6 +20,7 @@ public class BankTest {
         Bank bank = new Bank("MyBank");
 
         bank.registerCustomer("John", "1234", 1);
+
         bank.deposit(4000, 1);
 
         assertEquals(4000, bank.checkBalance(1, "1234"));
